@@ -1,9 +1,9 @@
 import { Position } from "../../../types/position";
 import { RoadEdge } from "../road-edge/road-edge";
 
+let i = 0;
 export class RoadNode {
-  private position: Position | null = null;
-
+  public id = i++;
   private neighbors: {
     node: RoadNode;
     edge: RoadEdge;
@@ -18,31 +18,18 @@ export class RoadNode {
   }
 
   public getPosition() {
-    if (!this.position) {
-      return null;
-    }
-
     return { ...this.position };
   }
 
-  constructor(position?: Position) {
-    if (position) {
-      this.setPosition(position);
-    }
-  }
-
-  protected canAddNeighbor() {
-    return true;
+  constructor(private position: Position) {
+    this.setPosition(position);
   }
 
   public addNeighbor(roadNode: RoadNode) {
-    if (!this.canAddNeighbor()) {
-      throw new Error("Cannot add neighbor to road");
-    }
-
     const existingEdgeFromRoadNodeToThisNode = roadNode
       .getNeighbors()
       .find((x) => x.node === this);
+    console.log(`L30`, existingEdgeFromRoadNodeToThisNode);
 
     const roadEdge =
       existingEdgeFromRoadNodeToThisNode?.edge ?? new RoadEdge(this, roadNode);
